@@ -1,4 +1,5 @@
 const links = document.querySelectorAll("a[href]");
+let currentRoute = "";
 
 for (const link of links) {
   link.addEventListener("click", function(event) {
@@ -13,42 +14,60 @@ window.onpopstate = event => {
   handleRouting(event.state, true);
 };
 
-function handleRouting(pathname, isPopingState) {
-  let currentPathname = window.location.pathname;
+let routeMap = [
+  {
+    pathname: "/about.html",
+    template: "<h3 class='about'>This is an About page</h3>",
+    name: "about"
+  },
+  {
+    pathname: "/contact.html",
+    template: "<h3 class='contact'>This is Contact page</h3>",
+    name: "contact"
+  },
+  {
+    pathname: "/",
+    template: "<h3 class='home'>This is Home page</h3>",
+    name: "home"
+  }
+];
 
-  if (currentPathname === pathname) {
+function handleRouting(pathname, isPopingState) {
+  
+  pathname = pathname === null ? '/' : pathname;
+  /* 
+    Clicking the same link multiple time will lead to duplicate pushState entries and clicking back in the
+    browser nav bar will stuck on the same page
+
+    Thus, we will track the currentRouteName and if the navigation is made for the curently active
+    route, noting will happen.
+  */
+  if (currentRoute === pathname) {
     return;
   }
 
-  switch (pathname) {
-    case "/about.html": {
-      !isPopingState &&
-        window.history.pushState("/about.html", "about", "/about.html");
-      document.querySelector("#outlet").innerHTML =
-        "<h3 class='about'>This is an About page</h3>"; // UI Component library
-      break;
-    }
+  let selectedRouteInfo = routeMap.find(
+    routeInfo => routeInfo.pathname === pathname
+  );
 
-    case "/contact.html": {
-      !isPopingState &&
-        window.history.pushState("/contact.html", "contact", "/contact.html");
-      document.querySelector("#outlet").innerHTML =
-        "<h3 class='contact'>This is a Contact page</h3>"; // UI Component library
-      break;
-    }
+  let { name, template, pathname: selectedRoutePathName } = selectedRouteInfo || {};
 
-    default: {
-      !isPopingState &&
-        window.history.pushState("/index.html", "home", "/index.html");
-      document.querySelector("#outlet").innerHTML =
-        "<h3 class='home'>This is a Home page</h3>"; // UI Component library
-      break;
-    }
+  if (name) {
+    // saving currentRoute name
+    currentRoute = selectedRoutePathName;
+
+    !isPopingState && window.history.pushState(pathname, name, pathname);
+    document.querySelector("#outlet").innerHTML = template; // UI Component library
+  } else {
+
+    // TODO:
+    // If no route is selcted, route the navigation to home page (Sensible default)
+    // Alternatively, we can route them to a 404 page
+
+    alert("404 Page Not Found");
   }
+  
 }
 
-// function handleInitialLoad() {
-//   handleRouting(window.location.pathname);
-// }
-
-// handleInitialLoad();
+// Initial route transition
+// handleRouting(window.location.pathname);
