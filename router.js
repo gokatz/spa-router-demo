@@ -33,13 +33,12 @@ let routeMap = [
 ];
 
 function handleRouting(pathname, isPopingState) {
-  
-  pathname = pathname === null ? '/' : pathname;
+  pathname = pathname === null ? "/" : pathname;
   /* 
     Clicking the same link multiple time will lead to duplicate pushState entries and clicking back in the
     browser nav bar will stuck on the same page
 
-    Thus, we will track the currentRouteName and if the navigation is made for the curently active
+    Thus, we will track the current route name and if the navigation is made for the curently active
     route, noting will happen.
   */
   if (currentRoute === pathname) {
@@ -50,23 +49,25 @@ function handleRouting(pathname, isPopingState) {
     routeInfo => routeInfo.pathname === pathname
   );
 
-  let { name, template, pathname: selectedRoutePathName } = selectedRouteInfo || {};
+  let { name, template, pathname: selectedRoutePathName } =
+    selectedRouteInfo || {};
 
   if (name) {
     // saving currentRoute name
     currentRoute = selectedRoutePathName;
 
+    // if the transition is made out of popState (ie, either clicking back or fwd browser navigation), 
+    // then we should not again push the same state. We just need to set the proper template layout.
+
     !isPopingState && window.history.pushState(pathname, name, pathname);
     document.querySelector("#outlet").innerHTML = template; // UI Component library
   } else {
-
     // TODO:
     // If no route is selcted, route the navigation to home page (Sensible default)
     // Alternatively, we can route them to a 404 page
 
     alert("404 Page Not Found");
   }
-  
 }
 
 // Initial route transition
