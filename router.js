@@ -33,7 +33,6 @@ let routeMap = [
 ];
 
 function handleRouting(pathname, isPopingState) {
-  
   // If there is no pathname, then the user is anded on the homepage, hence setting the pathname as '/'
   pathname = pathname === null ? "/" : pathname;
 
@@ -65,7 +64,6 @@ function handleRouting(pathname, isPopingState) {
     !isPopingState && window.history.pushState(pathname, name, pathname);
     document.querySelector("#outlet").innerHTML = template; // UI Component library
   } else {
-    
     /* 
       TODO:
       If no route is selcted, route the navigation to home page (Sensible default)
