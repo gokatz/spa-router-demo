@@ -1,0 +1,22 @@
+{
+  "name": "spa-router-demo",
+  "version": "1.0.0",
+  "description": "Simple and very basic implementation of a Single page application (SPA) router",
+  "main": "index.js",
+  "scripts": {
+    "start": "browser-sync start --server --files '*'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gokatz/spa-router-demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gokatz/spa-router-demo/issues"
+  },
+  "homepage": "https://github.com/gokatz/spa-router-demo#readme",
+  "dependencies": {
+    "browser-sync": "^2.26.7"
+  }
+}
